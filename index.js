@@ -28,7 +28,10 @@ function binding() {
 
 	let someData = ["a", "b", "c", "d"];	// use .enter() func if more items in arr than elems in selection
 	d3.selectAll("div").data(someData)
-		.enter().append("div")				// define what to do with each extra elem
+		.enter()                            // define what to do with each extra elem
+        //.exit()                           // define what to do if there are fewer data elems
+        .append("div")                      // define elem or shape and add to the DOM
+        //.insert()                         // select where in the DOM add the new elem
 		.html(function (d, i) {return d});	// "d" = data val bound to that elem, "i" returns array position
 
 		d3.selectAll("div").data(someData)
@@ -39,90 +42,48 @@ function filter() {
 }
 function data() {
     // will import data as an arr of JSON
-    d3.csv();								// built to pull comma-delimited data from files
-    d3.tsv();								// built to pull for tab-delimited data from files
+    d3.csv();								// pull comma-delimited data from files
+    d3.tsv();								// pull for tab-delimited data from files
     d3.dsv();								// allows to declare the delimiter
+    d3.json();
 
-    d3.json("tweets.json", function(obj) {
-        //console.log(obj.tweets);
+    d3.select("svg")
+        .selectAll("rect")
+        .data([15, 50, 22, 8, 100, 10])
+        .enter()
+        .append("rect")
+        .attr("width", 10)
+        .attr("height", function(data) { return data; })
+        .style("fill", "grey")
+        .attr("x", function(data, index) { return index * 10; })
+        .attr("y", function(data) { return 100 - data; });
+}
+function scale() {
+    let yScale = d3.scaleLinear().domain([0,24500]).range([0,100]);
+    d3.select("svg")
+        .selectAll("rect")
+        .data([14, 68, 24500, 430, 19, 1000, 5555])
+        .enter()
+        .append("rect")
+        .attr("width", 10)
+        .attr("height", function(data) {return yScale(data);})
+        .style("fill", "grey")
+        .attr("x", function(data, index) {return index * 10;})
+        .attr("y", function(data) {return 100 - yScale(data);});
+}
+function categorize() {
+    let arr = [423,124,66,424,58,10,900,44,1];
+    let qScale = d3.scaleQuantile().domain(arr).range([0,1,2]);    // .range(["s","m","l"]);
+    qScale(423); qScale(20);                    // returns 2 or "l"; returns 0 or "s";
+}
+function nest() {
+    d3.json("tweets.json", function(data) { // shared attributes of data can be used to sort them
+        let nested = d3.nest().key(function(el) {
+            return el.user;
+        }).entries(data.tweets);
     });
 }
-
-
-let json = {
-    "tweets": [
-        {
-            "user": "Al",
-            "content": "I really love seafood.",
-            "timestamp": " Mon Dec 23 2013 21:30 GMT-0800 (PST)",
-            "retweets": ["Raj","Pris","Roy"], "favorites": ["Sam"]
-        },
-        {
-            "user": "Al",
-            "content": "I take that back, this doesn't taste so good.",
-            "timestamp": "Mon Dec 23 2013 21:55 GMT-0800 (PST)",
-            "retweets": ["Roy"],
-            "favorites": []
-        },
-        {
-            "user": "Al",
-            "content": "From now on, I'm only eating cheese sandwiches.",
-            "timestamp": "Mon Dec 23 2013 22:22 GMT-0800 (PST)",
-            "retweets": [],
-            "favorites": ["Roy","Sam"]
-        },
-        {
-            "user": "Roy",
-            "content": "Great workout!",
-            "timestamp": " Mon Dec 23 2013 7:20 GMT-0800 (PST)",
-            "retweets": [],"favorites": []
-        },
-        {
-            "user": "Roy",
-            "content": "Spectacular oatmeal!",
-            "timestamp": " Mon Dec 23 2013 7:23 GMT-0800 (PST)",
-            "retweets": [],
-            "favorites": []
-        },
-        {
-            "user": "Roy",
-            "content": "Amazing traffic!",
-            "timestamp": " Mon Dec 23 2013 7:47  GMT-0800 (PST)",
-            "retweets": [],
-            "favorites": []
-        },
-        {
-            "user": "Roy",
-            "content": "Just got a ticket for texting and driving!",
-            "timestamp": " Mon Dec 23 2013 8:05 GMT-0800 (PST)",
-            "retweets": [],
-            "favorites": ["Sam", "Sally", "Pris"]
-        },
-        {
-            "user": "Pris",
-            "content": "Going to have some boiled eggs.",
-            "timestamp": " Mon Dec 23 2013 18:23 GMT-0800 (PST)",
-            "retweets": [],
-            "favorites": ["Sally"]
-        },
-        {
-            "user": "Pris",
-            "content": "Maybe practice some gymnastics.",
-            "timestamp": " Mon Dec 23 2013 19:47  GMT-0800 (PST)",
-            "retweets": [],
-            "favorites": ["Sally"]
-        },
-        {
-            "user": "Sam",
-            "content": "@Roy Let's get lunch",
-            "timestamp": " Mon Dec 23 2013 11:05 GMT-0800 (PST)",
-            "retweets": ["Pris"],
-            "favorites": ["Sally", "Pris"]
-        }
-    ]
-};
-
-
-d3.csv("cities.csv", function(obj) {
-    console.log(obj);
-});
+function measure() {
+    let arr =  [88,10000,1,75,12,35];
+    d3.min(arr, function (el) { return el; })       // return min/max/mean value from arr
+}
