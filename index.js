@@ -42,6 +42,7 @@ function shaps() {
     // path="Mx,y Lx,y Lx,y Lx,y z"; "M" move to starting pos, "L" line to, "z" close path
     svg.selectAll("rect").data(arr).enter().append("path")
         .attr("d", "").attr("class", "").attr("transform", "").attr("pathLength", "");
+
     // line generator for path element
     const dataPath = [{x:5,y:5},{x:10,y:15},{x:15,y:7},{x:20,y:12},{x:25,y:10}];
     let svgPath = d3.select("body").append("svg").attr("width", "500").attr("height", "500");
@@ -57,8 +58,6 @@ function shaps() {
 
     // area generator for path element
     const arrArea = [25,26,27,29,31,32,34,36,38,40,41,44,47,50,51,52,54];
-    const year = ["2000","2001","2002","2003","2004","2005","2006","2007","2008",
-        "2009","2010","2011","2012","2013","2014","2015","2016"];
     let heigth = 200;
     let heith = 500;
     let area = d3.area()
@@ -74,6 +73,78 @@ function shaps() {
         .attr("height", function (dArg) { return dArg; })
         .attr("x", function (dArg, iArg) { return iArg * 15; })
         .attr("y", function (dArg) { return maxVal - dArg });
+}
+function group() {
+    const dataPath = [{x:15,y:15},{x:50,y:115},{x:115,y:17},{x:145,y:112},{x:200,y:150}];
+    let svg = d3.select("body").append("svg").attr("width", "100%").attr("height", "100%");
+
+    let line = d3.line()
+        .x(function (d) { return d.x; })
+        .y(function (d) { return d.y; })
+        .curve(d3.curveCardinal);
+
+    let chartGroup = svg.append("g").attr("transform","translate(0,0)");
+
+    chartGroup.append("path")
+        .attr("fill", "none")
+        .attr("stroke", "gray")
+        .attr("d", line(dataPath));
+
+    chartGroup.selectAll("circle").data(dataPath)
+        .enter().append("circle")
+        .attr("cx",function (d) { return d.x; })
+        .attr("cy",function (d) { return d.y; })
+        .attr("r","2");
+}
+function scale() {
+    const arrArea = [25,30,35,40,45,50,55,60,65,70,80,90,100,110,120,140,180];
+
+    let height = 200;
+    let width = 500;
+
+    let yScale = d3.scaleLinear().domain([0, d3.max(arrArea)]).range([height, 0]);
+
+    let area = d3.area()
+        .x(function (d, i) { return i*20; })
+        .y0(height)
+        .y1(function (d) { return yScale(d); });
+
+    let svg = d3.select("body").append("svg").attr("width","500").attr("height","500");
+    svg.append("path").attr("d", area(arrArea));
+}
+function axis() {
+    const arrArea = [25,30,35,40,45,50,55,60,65,70,80,90,100,110,120,140,180];
+    const years = ["2000","2001","2002","2003","2004","2005","2006","2007","2008",
+        "2009","2010","2011","2012","2013","2014","2015","2016"];
+
+    const parseDate = d3.timeParse("%Y");       // full year parser format
+    const height = 200;
+    const width = 500;
+    const margin = {left:50,right:50,top:40,bottom:0};
+
+    let yScale = d3.scaleLinear().domain([0, d3.max(arrArea)]).range([height, 0]);
+    let yAxis = d3.axisLeft(yScale);    // .ticks(3) manage num of yScale ticks
+                                        // .tickPadding(10) manage ticks padding
+
+    let xScale = d3.scaleTime().domain(d3.extent(years, function(d) {
+        return parseDate(d);
+    })).range([0, width]);
+    let xAxis = d3.axisBottom(xScale);
+
+    let area = d3.area()
+        .x(function (d, i) { return xScale(parseDate(years[i])); })
+        .y0(height)
+        .y1(function (d) { return yScale(d); });
+
+    let svg = d3.select("body").append("svg")
+        .attr("height","600").attr("width","400");
+    let chartGroup = svg.append("g")
+        .attr("transform","translate("+margin.left+","+margin.top+")");
+    chartGroup.append("path").attr("d",area(arrArea));
+    chartGroup.append("g").attr("class","axis y").call(yAxis);
+    chartGroup.append("g").attr("class","axis x")
+        .attr("transform","translate(0,"+height+")")
+        .call(xAxis);
 }
 
 
@@ -108,25 +179,6 @@ function data() {
         })
         .attr("y", function (data) {
             return 100 - data;
-        });
-}
-function scale() {
-    let yScale = d3.scaleLinear().domain([0, 24500]).range([0, 100]);
-    d3.select("svg")
-        .selectAll("rect")
-        .data([14, 68, 24500, 430, 19, 1000, 5555])
-        .enter()
-        .append("rect")
-        .attr("width", 10)
-        .attr("height", function (data) {
-            return yScale(data);
-        })
-        .style("fill", "grey")
-        .attr("x", function (data, index) {
-            return index * 10;
-        })
-        .attr("y", function (data) {
-            return 100 - yScale(data);
         });
 }
 function categorize() {
