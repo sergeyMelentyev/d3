@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Line Graph</title>
+</head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+<style type="text/css">
+	body {
+		font-family: 'Open Sans Condensed', sans-serif;
+		fill: none;
+		stroke: #5d5b5d;
+		stroke-width: 0.5px;
+		font-weight: lighter;
+	}
+	text {
+		fill: #5d5b5d;
+	}
+	.axis {
+	  shape-rendering: crispEdges;
+	}
+</style>
+<body>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+<script>
+	(function(){
+		"use strict";
+		let margin = {top: 40, right: 20, bottom: 50, left: 50},
+		width = 960 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
+
+		let parseTime = d3.timeParse("%d-%b-%y");
+		let x = d3.scaleTime().range([0, width]);
+		let y = d3.scaleLinear().range([height, 0]);
+
+		let valueline = d3.line()
+		.x(function (d) {
+			return x(d.date);
+		})
+		.y(function (d) {
+			return y(d.close);
+		});
+
+		let svg = d3.select("body").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		let data = [
+			{
+				"date": "31-Jan-85",
+				"close": 2.99
+			},
+			{
+				"date": "28-Feb-85",
+				"close": 3.5
+			},
+			{
+				"date": "31-Mar-85",
+				"close": 3.75
+			},
+			{
+				"date": "30-Apr-85",
+				"close": 3.73
+			},
+			{
+				"date": "31-May-85",
+				"close": 3.4
+			},
+			{
+				"date": "30-Jun-85",
+				"close": 4.15
+			},
+			{
+				"date": "31-Jul-85",
+				"close": 4.62
+			},
+			{
+				"date": "31-Aug-85",
+				"close": 5.05
+			},
+			{
+				"date": "30-Sep-85",
+				"close": 4.79
+			},
+			{
+				"date": "31-Oct-85",
+				"close": 3.95
+			},
+			{
+				"date": "30-Nov-85",
+				"close": 4.44
+			},
+			{
+				"date": "31-Dec-85",
+				"close": 3.91
+			},
+			{
+				"date": "31-Jan-86",
+				"close": 4.34
+			},
+			{
+				"date": "28-Feb-86",
+				"close": 4.07
+			},
+			{
+				"date": "31-Mar-86",
+				"close": 4.14
+			},
+			{
+				"date": "30-Apr-86",
+				"close": 5.84
+			},
+			{
+				"date": "31-May-86",
+				"close": 6.4
+			},
+			{
+				"date": "30-Jun-86",
+				"close": 6.35
+			},
+			{
+				"date": "31-Jul-86",
+				"close": 6.19
+			},
+			{
+				"date": "31-Aug-86",
+				"close": 6.13
+			},
+			{
+				"date": "30-Sep-86",
+				"close": 6.02
+			},
+			{
+				"date": "31-Oct-86",
+				"close": 5.88
+			},
+			{
+				"date": "30-Nov-86",
+				"close": 5.75
+			},
+			{
+				"date": "31-Dec-86",
+				"close": 5.69
+			},
+			{
+				"date": "31-Jan-87",
+				"close": 5.61
+			},
+			{
+				"date": "28-Feb-87",
+				"close": 5.68
+			},
+			{
+				"date": "31-Mar-87",
+				"close": 5.83
+			},
+			{
+				"date": "30-Apr-87",
+				"close": 5.96
+			},
+			{
+				"date": "31-May-87",
+				"close": 3.82
+			},
+			{
+				"date": "30-Jun-87",
+				"close": 3.86
+			},
+			{
+				"date": "31-Jul-87",
+				"close": 3.59
+			},
+			{
+				"date": "31-Aug-87",
+				"close": 3.66
+			},
+			{
+				"date": "30-Sep-87",
+				"close": 3.89
+			},
+			{
+				"date": "31-Oct-87",
+				"close": 4.28
+			},
+			{
+				"date": "30-Nov-87",
+				"close": 4.27
+			},
+			{
+				"date": "31-Dec-87",
+				"close": 4.26
+			},
+			{
+				"date": "31-Jan-88",
+				"close": 4.76
+			},
+			{
+				"date": "29-Feb-88",
+				"close": 5.06
+			},
+			{
+				"date": "31-Mar-88",
+				"close": 4.76
+			},
+			{
+				"date": "30-Apr-88",
+				"close": 4.59
+			},
+			{
+				"date": "31-May-88",
+				"close": 5.12
+			},
+			{
+				"date": "30-Jun-88",
+				"close": 4.6
+			},
+			{
+				"date": "31-Jul-88",
+				"close": 4.39
+			},
+			{
+				"date": "31-Aug-88",
+				"close": 4.51
+			},
+			{
+				"date": "30-Sep-88",
+				"close": 4.13
+			},
+			{
+				"date": "31-Oct-88",
+				"close": 4.25
+			},
+			{
+				"date": "30-Nov-88",
+				"close": 3.91
+			},
+			{
+				"date": "31-Dec-88",
+				"close": 3.48
+			},
+			{
+				"date": "31-Jan-89",
+				"close": 3.61
+			},
+			{
+				"date": "28-Feb-89",
+				"close": 3.14
+			},
+			{
+				"date": "31-Mar-89",
+				"close": 3
+			},
+			{
+				"date": "30-Apr-89",
+				"close": 2.62
+			},
+			{
+				"date": "31-May-89",
+				"close": 2.24
+			},
+			{
+				"date": "30-Jun-89",
+				"close": 2.86
+			},
+			{
+				"date": "31-Jul-89",
+				"close": 3.35
+			},
+			{
+				"date": "31-Aug-89",
+				"close": 3.85
+			},
+			{
+				"date": "30-Sep-89",
+				"close": 4.4
+			},
+			{
+				"date": "31-Oct-89",
+				"close": 4.37
+			},
+			{
+				"date": "30-Nov-89",
+				"close": 4.82
+			},
+			{
+				"date": "31-Dec-89",
+				"close": 6.06
+			},
+			{
+				"date": "31-Jan-90",
+				"close": 6.28
+			},
+			{
+				"date": "28-Feb-90",
+				"close": 6.81
+			},
+			{
+				"date": "31-Mar-90",
+				"close": 6.89
+			},
+			{
+				"date": "30-Apr-90",
+				"close": 7.91
+			},
+			{
+				"date": "31-May-90",
+				"close": 8.23
+			},
+			{
+				"date": "30-Jun-90",
+				"close": 8.17
+			},
+			{
+				"date": "31-Jul-90",
+				"close": 8.45
+			},
+			{
+				"date": "31-Aug-90",
+				"close": 8.89
+			},
+			{
+				"date": "30-Sep-90",
+				"close": 9.43
+			},
+			{
+				"date": "31-Oct-90",
+				"close": 9.7
+			},
+			{
+				"date": "30-Nov-90",
+				"close": 9.77
+			},
+			{
+				"date": "31-Dec-90",
+				"close": 9.85
+			},
+			{
+				"date": "31-Jan-91",
+				"close": 11.24
+			},
+			{
+				"date": "28-Feb-91",
+				"close": 11.39
+			},
+			{
+				"date": "31-Mar-91",
+				"close": 12.2
+			},
+			{
+				"date": "30-Apr-91",
+				"close": 11.78
+			},
+			{
+				"date": "31-May-91",
+				"close": 12.31
+			},
+			{
+				"date": "30-Jun-91",
+				"close": 12.79
+			},
+			{
+				"date": "31-Jul-91",
+				"close": 12.71
+			},
+			{
+				"date": "31-Aug-91",
+				"close": 12.15
+			},
+			{
+				"date": "30-Sep-91",
+				"close": 11.91
+			},
+			{
+				"date": "31-Oct-91",
+				"close": 11.08
+			},
+			{
+				"date": "30-Nov-91",
+				"close": 10.94
+			},
+			{
+				"date": "31-Dec-91",
+				"close": 10.43
+			},
+			{
+				"date": "31-Jan-92",
+				"close": 9.2
+			},
+			{
+				"date": "29-Feb-92",
+				"close": 8.9
+			},
+			{
+				"date": "31-Mar-92",
+				"close": 8.01
+			},
+			{
+				"date": "30-Apr-92",
+				"close": 7.33
+			},
+			{
+				"date": "31-May-92",
+				"close": 6.98
+			},
+			{
+				"date": "30-Jun-92",
+				"close": 6.44
+			},
+			{
+				"date": "31-Jul-92",
+				"close": 6.08
+			},
+			{
+				"date": "31-Aug-92",
+				"close": 6.13
+			},
+			{
+				"date": "30-Sep-92",
+				"close": 5.7
+			},
+			{
+				"date": "31-Oct-92",
+				"close": 6.19
+			},
+			{
+				"date": "30-Nov-92",
+				"close": 5.75
+			},
+			{
+				"date": "31-Dec-92",
+				"close": 4.94
+			},
+			{
+				"date": "31-Jan-93",
+				"close": 3.88
+			},
+			{
+				"date": "28-Feb-93",
+				"close": 4.05
+			},
+			{
+				"date": "31-Mar-93",
+				"close": 4.66
+			},
+			{
+				"date": "30-Apr-93",
+				"close": 4.91
+			},
+			{
+				"date": "31-May-93",
+				"close": 4.59
+			},
+			{
+				"date": "30-Jun-93",
+				"close": 4.28
+			},
+			{
+				"date": "31-Jul-93",
+				"close": 4.42
+			},
+			{
+				"date": "31-Aug-93",
+				"close": 3.95
+			},
+			{
+				"date": "30-Sep-93",
+				"close": 3.93
+			},
+			{
+				"date": "31-Oct-93",
+				"close": 3.29
+			},
+			{
+				"date": "30-Nov-93",
+				"close": 3.22
+			},
+			{
+				"date": "31-Dec-93",
+				"close": 3.59
+			},
+			{
+				"date": "31-Jan-94",
+				"close": 3.62
+			},
+			{
+				"date": "28-Feb-94",
+				"close": 3.61
+			},
+			{
+				"date": "31-Mar-94",
+				"close": 2.99
+			},
+			{
+				"date": "30-Apr-94",
+				"close": 2.47
+			},
+			{
+				"date": "31-May-94",
+				"close": 2.12
+			},
+			{
+				"date": "30-Jun-94",
+				"close": 1.94
+			},
+			{
+				"date": "31-Jul-94",
+				"close": 2.03
+			},
+			{
+				"date": "31-Aug-94",
+				"close": 1.96
+			},
+			{
+				"date": "30-Sep-94",
+				"close": 2.19
+			},
+			{
+				"date": "31-Oct-94",
+				"close": 2.24
+			},
+			{
+				"date": "30-Nov-94",
+				"close": 2.08
+			},
+			{
+				"date": "31-Dec-94",
+				"close": 1.91
+			},
+			{
+				"date": "31-Jan-95",
+				"close": 1.86
+			},
+			{
+				"date": "28-Feb-95",
+				"close": 1.34
+			},
+			{
+				"date": "31-Mar-95",
+				"close": 1.19
+			},
+			{
+				"date": "30-Apr-95",
+				"close": 1.63
+			},
+			{
+				"date": "31-May-95",
+				"close": 1.85
+			},
+			{
+				"date": "30-Jun-95",
+				"close": 2.13
+			},
+			{
+				"date": "31-Jul-95",
+				"close": 2.21
+			},
+			{
+				"date": "31-Aug-95",
+				"close": 2.17
+			},
+			{
+				"date": "30-Sep-95",
+				"close": 2.27
+			},
+			{
+				"date": "31-Oct-95",
+				"close": 2.66
+			},
+			{
+				"date": "30-Nov-95",
+				"close": 3.17
+			},
+			{
+				"date": "31-Dec-95",
+				"close": 3.26
+			},
+			{
+				"date": "31-Jan-96",
+				"close": 3.26
+			},
+			{
+				"date": "29-Feb-96",
+				"close": 3.37
+			},
+			{
+				"date": "31-Mar-96",
+				"close": 3.43
+			},
+			{
+				"date": "30-Apr-96",
+				"close": 3.21
+			},
+			{
+				"date": "31-May-96",
+				"close": 2.85
+			},
+			{
+				"date": "30-Jun-96",
+				"close": 2.84
+			},
+			{
+				"date": "31-Jul-96",
+				"close": 2.63
+			},
+			{
+				"date": "31-Aug-96",
+				"close": 2.21
+			},
+			{
+				"date": "30-Sep-96",
+				"close": 2.17
+			},
+			{
+				"date": "31-Oct-96",
+				"close": 1.95
+			},
+			{
+				"date": "30-Nov-96",
+				"close": 1.64
+			},
+			{
+				"date": "31-Dec-96",
+				"close": 1.64
+			},
+			{
+				"date": "31-Jan-97",
+				"close": 1.71
+			},
+			{
+				"date": "28-Feb-97",
+				"close": 1.59
+			},
+			{
+				"date": "31-Mar-97",
+				"close": 1.58
+			},
+			{
+				"date": "30-Apr-97",
+				"close": 1.37
+			},
+			{
+				"date": "31-May-97",
+				"close": 1.6
+			},
+			{
+				"date": "30-Jun-97",
+				"close": 1.59
+			},
+			{
+				"date": "31-Jul-97",
+				"close": 1.84
+			},
+			{
+				"date": "31-Aug-97",
+				"close": 2
+			},
+			{
+				"date": "30-Sep-97",
+				"close": 2.06
+			},
+			{
+				"date": "31-Oct-97",
+				"close": 2.12
+			},
+			{
+				"date": "30-Nov-97",
+				"close": 2.27
+			},
+			{
+				"date": "31-Dec-97",
+				"close": 2.01
+			},
+			{
+				"date": "31-Jan-98",
+				"close": 2.07
+			},
+			{
+				"date": "28-Feb-98",
+				"close": 2.37
+			},
+			{
+				"date": "31-Mar-98",
+				"close": 2.35
+			},
+			{
+				"date": "30-Apr-98",
+				"close": 2.63
+			},
+			{
+				"date": "31-May-98",
+				"close": 2.69
+			},
+			{
+				"date": "30-Jun-98",
+				"close": 2.96
+			},
+			{
+				"date": "31-Jul-98",
+				"close": 2.8
+			},
+			{
+				"date": "31-Aug-98",
+				"close": 2.69
+			},
+			{
+				"date": "30-Sep-98",
+				"close": 2.62
+			},
+			{
+				"date": "31-Oct-98",
+				"close": 2.66
+			},
+			{
+				"date": "30-Nov-98",
+				"close": 2.8
+			},
+			{
+				"date": "31-Dec-98",
+				"close": 3.41
+			},
+			{
+				"date": "31-Jan-99",
+				"close": 3.49
+			},
+			{
+				"date": "28-Feb-99",
+				"close": 3.59
+			},
+			{
+				"date": "31-Mar-99",
+				"close": 3.82
+			},
+			{
+				"date": "30-Apr-99",
+				"close": 4.2
+			},
+			{
+				"date": "31-May-99",
+				"close": 4.8
+			},
+			{
+				"date": "30-Jun-99",
+				"close": 4.85
+			},
+			{
+				"date": "31-Jul-99",
+				"close": 5.32
+			},
+			{
+				"date": "31-Aug-99",
+				"close": 5.52
+			},
+			{
+				"date": "30-Sep-99",
+				"close": 5.84
+			},
+			{
+				"date": "31-Oct-99",
+				"close": 5.97
+			},
+			{
+				"date": "30-Nov-99",
+				"close": 5.85
+			},
+			{
+				"date": "31-Dec-99",
+				"close": 5.56
+			},
+			{
+				"date": "31-Jan-00",
+				"close": 5.53
+			},
+			{
+				"date": "29-Feb-00",
+				"close": 5.53
+			},
+			{
+				"date": "31-Mar-00",
+				"close": 5.67
+			},
+			{
+				"date": "30-Apr-00",
+				"close": 5.67
+			},
+			{
+				"date": "31-May-00",
+				"close": 5.4
+			},
+			{
+				"date": "30-Jun-00",
+				"close": 5.55
+			},
+			{
+				"date": "31-Jul-00",
+				"close": 4.96
+			},
+			{
+				"date": "31-Aug-00",
+				"close": 5.21
+			},
+			{
+				"date": "30-Sep-00",
+				"close": 5.31
+			},
+			{
+				"date": "31-Oct-00",
+				"close": 4.96
+			},
+			{
+				"date": "30-Nov-00",
+				"close": 5.44
+			},
+			{
+				"date": "31-Dec-00",
+				"close": 6.15
+			},
+			{
+				"date": "31-Jan-01",
+				"close": 6.69
+			},
+			{
+				"date": "28-Feb-01",
+				"close": 7.09
+			},
+			{
+				"date": "31-Mar-01",
+				"close": 7.84
+			},
+			{
+				"date": "30-Apr-01",
+				"close": 8.03
+			},
+			{
+				"date": "31-May-01",
+				"close": 8.09
+			},
+			{
+				"date": "30-Jun-01",
+				"close": 8.29
+			},
+			{
+				"date": "31-Jul-01",
+				"close": 8.9
+			},
+			{
+				"date": "31-Aug-01",
+				"close": 9.37
+			},
+			{
+				"date": "30-Sep-01",
+				"close": 9.71
+			},
+			{
+				"date": "31-Oct-01",
+				"close": 10.19
+			},
+			{
+				"date": "30-Nov-01",
+				"close": 10.22
+			},
+			{
+				"date": "31-Dec-01",
+				"close": 10.6
+			},
+			{
+				"date": "31-Jan-02",
+				"close": 10.89
+			},
+			{
+				"date": "28-Feb-02",
+				"close": 10.73
+			},
+			{
+				"date": "31-Mar-02",
+				"close": 10.6
+			},
+			{
+				"date": "30-Apr-02",
+				"close": 10.57
+			},
+			{
+				"date": "31-May-02",
+				"close": 10.7
+			},
+			{
+				"date": "30-Jun-02",
+				"close": 10.54
+			},
+			{
+				"date": "31-Jul-02",
+				"close": 10.33
+			},
+			{
+				"date": "31-Aug-02",
+				"close": 10.02
+			},
+			{
+				"date": "30-Sep-02",
+				"close": 9.78
+			},
+			{
+				"date": "31-Oct-02",
+				"close": 9.29
+			},
+			{
+				"date": "30-Nov-02",
+				"close": 8.94
+			},
+			{
+				"date": "31-Dec-02",
+				"close": 8.43
+			},
+			{
+				"date": "31-Jan-03",
+				"close": 7.68
+			},
+			{
+				"date": "28-Feb-03",
+				"close": 7.71
+			},
+			{
+				"date": "31-Mar-03",
+				"close": 6.98
+			},
+			{
+				"date": "30-Apr-03",
+				"close": 6.79
+			},
+			{
+				"date": "31-May-03",
+				"close": 6.63
+			},
+			{
+				"date": "30-Jun-03",
+				"close": 6.14
+			},
+			{
+				"date": "31-Jul-03",
+				"close": 5.87
+			},
+			{
+				"date": "31-Aug-03",
+				"close": 6.19
+			},
+			{
+				"date": "30-Sep-03",
+				"close": 6.03
+			},
+			{
+				"date": "31-Oct-03",
+				"close": 6.07
+			},
+			{
+				"date": "30-Nov-03",
+				"close": 5.5
+			},
+			{
+				"date": "31-Dec-03",
+				"close": 5.31
+			},
+			{
+				"date": "31-Jan-04",
+				"close": 5.17
+			},
+			{
+				"date": "29-Feb-04",
+				"close": 4.42
+			},
+			{
+				"date": "31-Mar-04",
+				"close": 4.27
+			},
+			{
+				"date": "30-Apr-04",
+				"close": 4.03
+			},
+			{
+				"date": "31-May-04",
+				"close": 3.73
+			},
+			{
+				"date": "30-Jun-04",
+				"close": 3.5
+			},
+			{
+				"date": "31-Jul-04",
+				"close": 2.86
+			},
+			{
+				"date": "31-Aug-04",
+				"close": 2.32
+			},
+			{
+				"date": "30-Sep-04",
+				"close": 2.32
+			},
+			{
+				"date": "31-Oct-04",
+				"close": 2.33
+			},
+			{
+				"date": "30-Nov-04",
+				"close": 2.38
+			},
+			{
+				"date": "31-Dec-04",
+				"close": 2.36
+			},
+			{
+				"date": "31-Jan-05",
+				"close": 2.19
+			},
+			{
+				"date": "28-Feb-05",
+				"close": 2.46
+			},
+			{
+				"date": "31-Mar-05",
+				"close": 2.26
+			},
+			{
+				"date": "30-Apr-05",
+				"close": 2.18
+			},
+			{
+				"date": "31-May-05",
+				"close": 2.16
+			},
+			{
+				"date": "30-Jun-05",
+				"close": 1.91
+			},
+			{
+				"date": "31-Jul-05",
+				"close": 1.9
+			},
+			{
+				"date": "31-Aug-05",
+				"close": 2.02
+			},
+			{
+				"date": "30-Sep-05",
+				"close": 1.96
+			},
+			{
+				"date": "31-Oct-05",
+				"close": 1.94
+			},
+			{
+				"date": "30-Nov-05",
+				"close": 1.76
+			},
+			{
+				"date": "31-Dec-05",
+				"close": 1.66
+			},
+			{
+				"date": "31-Jan-06",
+				"close": 1.71
+			},
+			{
+				"date": "28-Feb-06",
+				"close": 1.6
+			},
+			{
+				"date": "31-Mar-06",
+				"close": 1.59
+			},
+			{
+				"date": "30-Apr-06",
+				"close": 1.52
+			},
+			{
+				"date": "31-May-06",
+				"close": 1.74
+			},
+			{
+				"date": "30-Jun-06",
+				"close": 1.79
+			},
+			{
+				"date": "31-Jul-06",
+				"close": 1.73
+			},
+			{
+				"date": "31-Aug-06",
+				"close": 1.62
+			},
+			{
+				"date": "30-Sep-06",
+				"close": 1.66
+			},
+			{
+				"date": "31-Oct-06",
+				"close": 1.77
+			},
+			{
+				"date": "30-Nov-06",
+				"close": 1.86
+			},
+			{
+				"date": "31-Dec-06",
+				"close": 1.69
+			},
+			{
+				"date": "31-Jan-07",
+				"close": 1.74
+			},
+			{
+				"date": "28-Feb-07",
+				"close": 1.8
+			},
+			{
+				"date": "31-Mar-07",
+				"close": 1.62
+			},
+			{
+				"date": "30-Apr-07",
+				"close": 1.66
+			},
+			{
+				"date": "31-May-07",
+				"close": 1.54
+			},
+			{
+				"date": "30-Jun-07",
+				"close": 1.47
+			},
+			{
+				"date": "31-Jul-07",
+				"close": 1.57
+			},
+			{
+				"date": "31-Aug-07",
+				"close": 1.53
+			},
+			{
+				"date": "30-Sep-07",
+				"close": 1.36
+			},
+			{
+				"date": "31-Oct-07",
+				"close": 1.13
+			},
+			{
+				"date": "30-Nov-07",
+				"close": 0.97
+			},
+			{
+				"date": "31-Dec-07",
+				"close": 0.96
+			},
+			{
+				"date": "31-Jan-08",
+				"close": 1.15
+			},
+			{
+				"date": "29-Feb-08",
+				"close": 1.3
+			},
+			{
+				"date": "31-Mar-08",
+				"close": 1.55
+			},
+			{
+				"date": "30-Apr-08",
+				"close": 1.79
+			},
+			{
+				"date": "31-May-08",
+				"close": 1.97
+			},
+			{
+				"date": "30-Jun-08",
+				"close": 2.09
+			},
+			{
+				"date": "31-Jul-08",
+				"close": 2.45
+			},
+			{
+				"date": "31-Aug-08",
+				"close": 2.62
+			},
+			{
+				"date": "30-Sep-08",
+				"close": 2.82
+			},
+			{
+				"date": "31-Oct-08",
+				"close": 3.1
+			},
+			{
+				"date": "30-Nov-08",
+				"close": 3.33
+			},
+			{
+				"date": "31-Dec-08",
+				"close": 4.38
+			},
+			{
+				"date": "31-Jan-09",
+				"close": 5.27
+			},
+			{
+				"date": "28-Feb-09",
+				"close": 5.82
+			},
+			{
+				"date": "31-Mar-09",
+				"close": 7.85
+			},
+			{
+				"date": "30-Apr-09",
+				"close": 9.01
+			},
+			{
+				"date": "31-May-09",
+				"close": 10.03
+			},
+			{
+				"date": "30-Jun-09",
+				"close": 11.37
+			},
+			{
+				"date": "31-Jul-09",
+				"close": 12.02
+			},
+			{
+				"date": "31-Aug-09",
+				"close": 12.59
+			},
+			{
+				"date": "30-Sep-09",
+				"close": 13.45
+			},
+			{
+				"date": "31-Oct-09",
+				"close": 13.59
+			},
+			{
+				"date": "30-Nov-09",
+				"close": 13.68
+			},
+			{
+				"date": "31-Dec-09",
+				"close": 13.13
+			},
+			{
+				"date": "31-Jan-10",
+				"close": 12.6
+			},
+			{
+				"date": "28-Feb-10",
+				"close": 11.71
+			},
+			{
+				"date": "31-Mar-10",
+				"close": 10.19
+			},
+			{
+				"date": "30-Apr-10",
+				"close": 9.13
+			},
+			{
+				"date": "31-May-10",
+				"close": 7.7
+			},
+			{
+				"date": "30-Jun-10",
+				"close": 6.29
+			},
+			{
+				"date": "31-Jul-10",
+				"close": 5.57
+			},
+			{
+				"date": "31-Aug-10",
+				"close": 5.08
+			},
+			{
+				"date": "30-Sep-10",
+				"close": 4.04
+			},
+			{
+				"date": "31-Oct-10",
+				"close": 3.82
+			},
+			{
+				"date": "30-Nov-10",
+				"close": 3.62
+			},
+			{
+				"date": "31-Dec-10",
+				"close": 3.28
+			},
+			{
+				"date": "31-Jan-11",
+				"close": 2.86
+			},
+			{
+				"date": "28-Feb-11",
+				"close": 2.88
+			},
+			{
+				"date": "31-Mar-11",
+				"close": 2.65
+			},
+			{
+				"date": "30-Apr-11",
+				"close": 2.38
+			},
+			{
+				"date": "31-May-11",
+				"close": 2.45
+			},
+			{
+				"date": "30-Jun-11",
+				"close": 2.32
+			},
+			{
+				"date": "31-Jul-11",
+				"close": 1.94
+			},
+			{
+				"date": "31-Aug-11",
+				"close": 1.8
+			},
+			{
+				"date": "30-Sep-11",
+				"close": 1.78
+			},
+			{
+				"date": "31-Oct-11",
+				"close": 2.01
+			},
+			{
+				"date": "30-Nov-11",
+				"close": 2.02
+			},
+			{
+				"date": "31-Dec-11",
+				"close": 2.06
+			},
+			{
+				"date": "31-Jan-12",
+				"close": 2.39
+			},
+			{
+				"date": "29-Feb-12",
+				"close": 2.37
+			},
+			{
+				"date": "31-Mar-12",
+				"close": 2.83
+			},
+			{
+				"date": "30-Apr-12",
+				"close": 2.85
+			},
+			{
+				"date": "31-May-12",
+				"close": 3.08
+			},
+			{
+				"date": "30-Jun-12",
+				"close": 3.24
+			},
+			{
+				"date": "31-Jul-12",
+				"close": 3.16
+			},
+			{
+				"date": "31-Aug-12",
+				"close": 3.28
+			},
+			{
+				"date": "30-Sep-12",
+				"close": 3.45
+			},
+			{
+				"date": "31-Oct-12",
+				"close": 3.19
+			},
+			{
+				"date": "30-Nov-12",
+				"close": 2.8
+			},
+			{
+				"date": "31-Dec-12",
+				"close": 2.76
+			},
+			{
+				"date": "31-Jan-13",
+				"close": 2.48
+			},
+			{
+				"date": "28-Feb-13",
+				"close": 2.56
+			},
+			{
+				"date": "31-Mar-13",
+				"close": 2.41
+			},
+			{
+				"date": "30-Apr-13",
+				"close": 2.44
+			},
+			{
+				"date": "31-May-13",
+				"close": 2.52
+			},
+			{
+				"date": "30-Jun-13",
+				"close": 2.63
+			},
+			{
+				"date": "31-Jul-13",
+				"close": 2.74
+			},
+			{
+				"date": "31-Aug-13",
+				"close": 2.74
+			},
+			{
+				"date": "30-Sep-13",
+				"close": 2.82
+			},
+			{
+				"date": "31-Oct-13",
+				"close": 2.75
+			},
+			{
+				"date": "30-Nov-13",
+				"close": 2.59
+			},
+			{
+				"date": "31-Dec-13",
+				"close": 2.63
+			},
+			{
+				"date": "31-Jan-14",
+				"close": 2.47
+			},
+			{
+				"date": "28-Feb-14",
+				"close": 2.29
+			},
+			{
+				"date": "31-Mar-14",
+				"close": 2.15
+			},
+			{
+				"date": "30-Apr-14",
+				"close": 2.44
+			},
+			{
+				"date": "31-May-14",
+				"close": 2.19
+			},
+			{
+				"date": "30-Jun-14",
+				"close": 2.18
+			},
+			{
+				"date": "31-Jul-14",
+				"close": 2.09
+			},
+			{
+				"date": "31-Aug-14",
+				"close": 2.12
+			},
+			{
+				"date": "30-Sep-14",
+				"close": 2.08
+			},
+			{
+				"date": "31-Oct-14",
+				"close": 2.15
+			},
+			{
+				"date": "30-Nov-14",
+				"close": 2.12
+			},
+			{
+				"date": "31-Dec-14",
+				"close": 1.94
+			},
+			{
+				"date": "31-Jan-15",
+				"close": 2.02
+			},
+			{
+				"date": "28-Feb-15",
+				"close": 2.19
+			},
+			{
+				"date": "31-Mar-15",
+				"close": 2.25
+			},
+			{
+				"date": "30-Apr-15",
+				"close": 2.12
+			},
+			{
+				"date": "31-May-15",
+				"close": 2.34
+			},
+			{
+				"date": "30-Jun-15",
+				"close": 2.46
+			},
+			{
+				"date": "31-Jul-15",
+				"close": 2.46
+			},
+			{
+				"date": "31-Aug-15",
+				"close": 2.47
+			},
+			{
+				"date": "30-Sep-15",
+				"close": 2.71
+			},
+			{
+				"date": "31-Oct-15",
+				"close": 2.83
+			},
+			{
+				"date": "30-Nov-15",
+				"close": 3.01
+			},
+			{
+				"date": "31-Dec-15",
+				"close": 3.63
+			},
+			{
+				"date": "31-Jan-16",
+				"close": 3.6
+			},
+			{
+				"date": "29-Feb-16",
+				"close": 3.88
+			},
+			{
+				"date": "31-Mar-16",
+				"close": 4.13
+			},
+			{
+				"date": "30-Apr-16",
+				"close": 4.29
+			},
+			{
+				"date": "31-May-16",
+				"close": 4.73
+			},
+			{
+				"date": "30-Jun-16",
+				"close": 4.7
+			},
+			{
+				"date": "31-Jul-16",
+				"close": 4.82
+			},
+			{
+				"date": "31-Aug-16",
+				"close": 4.86
+			},
+			{
+				"date": "30-Sep-16",
+				"close": 4.63
+			},
+			{
+				"date": "31-Oct-16",
+				"close": 4.84
+			},
+			{
+				"date": "30-Nov-16",
+				"close": 4.71
+			},
+			{
+				"date": "31-Dec-16",
+				"close": 4.51
+			},
+			{
+				"date": "31-Jan-17",
+				"close": 4.69
+			},
+			{
+				"date": "28-Feb-17",
+				"close": 4.21
+			},
+			{
+				"date": "31-Mar-17",
+				"close": 3.86
+			},
+			{
+				"date": "30-Apr-17",
+				"close": 3.63
+			}
+		]
+
+		data.forEach(function(d) {
+			d.date = parseTime(d.date);
+			d.close = +d.close;
+		});
+		x.domain(d3.extent(data, function(d) { return d.date; }));
+		y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+	    // draw "path" element
+	    svg.append("path").data([data]).attr("class", "line").attr("d", valueline);
+
+	    // draw "x" axis
+	    svg.append("g").attr("class", "axis").attr("transform", "translate(0," + height + ")")
+	    .call(d3.axisBottom(x).ticks(7));
+
+	    // draw "y" axis
+	    svg.append("g").attr("class", "axis").call(d3.axisLeft(y));
+
+	    // add label for "x" axis
+	    svg.append("text")
+	    	.attr("transform", "translate(" + (width/2) + " ," + (height + margin.top) + ")")
+	    	.style("text-anchor", "middle")
+	    	.text("Report Date");
+
+	    // add labels for "y" axis
+	    svg.append("text")
+		    .attr("transform", "rotate(-90)")
+		    .attr("y",0 - margin.left)
+		    .attr("x",0 - (height / 2))
+		    .attr("dy", "1em")
+		    .style("text-anchor", "middle")
+		    .text("Issuer");
+
+	    // add title
+	    svg.append("text")
+		    .attr("x", (width / 2))
+		    .attr("y", 0 - (margin.top / 2))
+		    .attr("text-anchor", "middle")
+		    .style("font-size", "20px")
+		    .text("Moody's Default Statistics");
+	})();
+</script>
+</html>
